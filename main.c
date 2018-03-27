@@ -39,8 +39,6 @@ void	ft_err()
 {
 	ft_putstr_fd("\x1B[31m", 2);
 	ft_putstr_fd("Error", 2);
-	// write(2, "\x1B[31m", 7);
-	// write(2, "Error\n", 6);
 	exit(EXIT_FAILURE);
 }
 
