@@ -104,6 +104,7 @@ int				ft_sqrt(int nb);
 int				ft_isnumber(char *str);
 void			ft_lstaddback(t_list **alst, t_list *new);
 t_list			*ft_create_node(void *content);
+char			*ft_strndup(char *str, size_t size);
 
 typedef	struct	s_gnl
 {

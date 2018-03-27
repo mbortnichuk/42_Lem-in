@@ -47,4 +47,16 @@ struct	s_info
 	char	*end;
 };
 
+int		ft_strisdigit(char *str);
+void	ft_initiation(t_info *info);
+void	ft_err();
+void	ft_valid_map(t_info *info);
+void	ft_print_way(t_info *info, char **way);
+void	ft_ants_nbr(t_info *info);
+t_room	*ft_find_room(t_room *room, char *str);
+t_room	*ft_add_new_room(int i, t_room *room, t_info *info);
+t_room	*ft_add_new_link(char *src, char *dest, t_room *room);
+t_room	*ft_parse_pipe(t_room *room, t_info *info);
+t_room	*ft_parse_map(t_room *room, t_info *info);
+
 #endif
