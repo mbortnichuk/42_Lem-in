@@ -35,18 +35,31 @@ void	ft_initiation(t_info *info)
 	info->end = NULL;
 }
 
+
+
+
+
 void	ft_err()
 {
-	ft_putstr_fd("\x1B[31m", 2);
-	ft_putstr_fd("Error", 2);
+	ft_putstr_fd("Error\n", 2);
 	exit(EXIT_FAILURE);
 }
+
+
+
+
 
 void	ft_valid_map(t_info *info)
 {
 	if (info->start == NULL || info->end == NULL)
 		ft_err();
 }
+
+
+
+
+
+
 
 void	ft_print_way(t_info *info, char **way)
 {
@@ -66,6 +79,12 @@ void	ft_print_way(t_info *info, char **way)
 	}
 }
 
+
+
+
+
+
+
 void	ft_ants_nbr(t_info *info)
 {
 	if (get_next_line(0, &info->str) < 1)
@@ -77,6 +96,10 @@ void	ft_ants_nbr(t_info *info)
 	ft_putendl(info->str);
 	free(info->str);
 }
+
+
+
+
 
 t_room	*ft_find_room(t_room *room, char *str)
 {
@@ -91,6 +114,9 @@ t_room	*ft_find_room(t_room *room, char *str)
 	}
 	return (NULL);
 }
+
+
+
 
 t_room	*ft_add_new_room(int i, t_room *room, t_info *info)
 {
@@ -143,12 +169,16 @@ t_room	*ft_add_new_link(char *src, char *dest, t_room *room)
 	return (room);
 }
 
+
+
+
+
 t_room	*ft_parse_pipe(t_room *room, t_info *info)
 {
 	char	**pipe;
 
-	// if (info->str)
-	// 	room = ft_first_move(room, info);
+	if (info->str)
+		room = ft_first_move(room, info);
 	while (get_next_line(0, &info->str) > 0)
 	{
 		if (!ft_strchr(info->str, '-') && info->str[0] != '#')
@@ -197,6 +227,89 @@ t_room	*ft_parse_map(t_room *room, t_info *info)
 	return (room);
 }
 
+
+
+
+
+
+
+
+
+t_room	*ft_first_move(t_room *room, t_info *info)
+{
+	char	**p;
+
+	if (!ft_strchr(info->str, '-') && info->str[0] != '#')
+		ft_err();
+	if (info->str[0] != '#')
+	{
+		p = ft_strsplit(info->str, '-');
+		room = ft_add_new_link(p[0], p[1], room);
+		room = ft_add_new_link(p[1], p[0], room);
+		free(p[0]);
+		free(p[1]);
+		free(p);
+	}
+	ft_putendl(info->str);
+	free(info->str);
+	return (room);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+t_room	*ft_set_unlroom(t_info *info, t_room *room)
+{
+	t_room	*temp;
+
+	temp = room;
+	if (info->w_max >= info->room_nbr + 10)
+		ft_err();
+	while (temp)
+	{
+		if (temp->r_weight == 0)
+			info->weight++;
+		if (temp->r_weight == -1 || temp->r_weight == 0)
+			temp->r_weight = info->w_max + 1;
+		temp = temp->next;
+	}
+	return (room);
+}
+
+t_room	*ft_set_endweight(t_room *room, t_info *info)
+{
+	t_linkroom	*t2;
+	t_room		*t1;
+
+	t1 = room;
+	t2 = room->link;
+	while (ft_strcmp(t1->name, info->end))
+		t1 = t1->next;
+	if (!t1->link)
+		ft_err();
+	info->weight = 1;
+	t1->r_weight = 1;
+	info->w_max = 1;
+	return (room);
+}
+
+
+
+
+
 #include <stdio.h>
 int main(void)
 {
@@ -211,5 +324,8 @@ int main(void)
 	room = ft_parse_map(room, &info);
 	room = ft_parse_pipe(room, &info);
 	ft_valid_map(&info);
+	// room = ft_set_weight(room, &info);
+	// way = ft_find_way(room, &info);
+	// ft_print_way(&info, way);
 	return (0);
 }

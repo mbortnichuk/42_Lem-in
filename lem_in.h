@@ -58,5 +58,8 @@ t_room	*ft_add_new_room(int i, t_room *room, t_info *info);
 t_room	*ft_add_new_link(char *src, char *dest, t_room *room);
 t_room	*ft_parse_pipe(t_room *room, t_info *info);
 t_room	*ft_parse_map(t_room *room, t_info *info);
+t_room	*ft_first_move(t_room *room, t_info *info);
+t_room	*ft_set_endweight(t_room *room, t_info *info);
+t_room	*ft_set_unlroom(t_info *info, t_room *room);
 
 #endif
