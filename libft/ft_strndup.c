@@ -17,14 +17,11 @@ char	*ft_strndup(char *str, size_t size)
 	size_t	i;
 	char	*new;
 
-	i = 0;
+	i = -1;
 	new = (char *)malloc(sizeof(char) * (size + 1));
 	CHECK(new);
-	while (i < size)
-	{
+	while (++i < size)
 		new[i] = str[i];
-		i++;
-	}
 	new[i] = '\0';
 	return (new);
 }

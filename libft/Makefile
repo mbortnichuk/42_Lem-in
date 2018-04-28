@@ -81,6 +81,7 @@ SRCS = ft_atoi.c \
 	   ft_lstaddback.c \
 	   ft_create_node.c \
 	   ft_strndup.c \
+	   ft_isspace.c \
 	   get_next_line.c
 
 BINS = $(SRCS:.c=.o)

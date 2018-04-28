@@ -105,6 +105,7 @@ int				ft_isnumber(char *str);
 void			ft_lstaddback(t_list **alst, t_list *new);
 t_list			*ft_create_node(void *content);
 char			*ft_strndup(char *str, size_t size);
+int				ft_isspace(char s);
 
 typedef	struct	s_gnl
 {
