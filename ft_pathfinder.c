@@ -12,74 +12,76 @@
 
 #include "lem_in.h"
 
-void	ft_ants_amount(t_info *info, char *line)
+void	ft_ants_amount(char *str, t_info *info)
 {
 	int		i;
-	char	*s;
+	char	*line;
 
 	i = 0;
 	info->st_point = 1;
-	info->ant_list = ft_join(info->ant_list, line, 0);
-	if (line[0] == '#')
+	info->ant_list = ft_join(0, info->ant_list, str);
+	if (str[0] == '#')
 		return ;
-	s = ft_strtrim(line);
-	if ((info->ants_amount = ft_atoi(s)) <= 0)
-		ft_freeandexit(info, 1);
-	while (s[i] != '\n' && s[i] != 0)
+	line = ft_strtrim(str);
+	if ((info->ants_amount = ft_atoi(line)) <= 0)
+		ft_freeandexit(1, info);
+	while (line[i] != '\n' && line[i] != 0)
 	{
-		if (!ft_isdigit(s[i++]))
-			ft_freeandexit(info, 1);
+		if (!(line[i] >= '0' && line[i] <= '9'))
+			ft_freeandexit(1, info);
+		i++;
 	}
 }
 
-int	ft_find_way(t_info *info, int r_index, int d_index)
+int		ft_find_way(int roomid, int doorid, t_info *info)
 {
-	while (d_index < info->rooms_amount)
+	while (doorid < info->rooms_amount)
 	{
-		if (info->table[r_index][++d_index] == 1)
-			return (d_index);
+		if (info->table[roomid][++doorid] == 1)
+			return (doorid);
 	}
 	return (0);
 }
 
-int	ft_ontheway(t_info *info, int r_index)
+int		ft_ontheway(int roomid, t_info *info)
 {
 	int i;
 
-	i = -1;
-	while (info->way[++i] != -1)
+	i = 0;
+	while (info->way[i] != -1)
 	{
-		if (info->way[i] == r_index)
+		if (info->way[i] == roomid)
 			return (1);
+		i++;
 	}
 	return (0);
 }
 
-int			ft_pathfinder(t_info *info, int i)
+int		ft_pathfinder(int i, t_info *info)
 {
 	if (info->table[0][info->rooms_amount - 1])
 	{
 		info->way[++(info->path_index)] = info->rooms_amount - 1;
 		return (1);
 	}
-	while ((i = ft_find_way(info, info->current_r, i)))
+	while ((i = ft_find_way(info->current_r, i, info)))
 	{
-		if (ft_lastroom(info, i))
+		if (ft_lastroom(i, info))
 			return (1);
-		else if (ft_ontheway(info, i))
-			ft_delete_el(info, i, 0);
+		else if (ft_ontheway(i, info))
+			ft_delete_el(i, 0, info);
 	}
-	if ((info->current_r = ft_find_way(info, info->current_r, 0)) == 0)
+	if ((info->current_r = ft_find_way(info->current_r, 0, info)) == 0)
 	{
 		if (info->path_index == 0 || info->current_r == 0)
 			return (0);
 		info->current_r = info->way[info->path_index - 1];
-		ft_delete_el(info, info->way[info->path_index], 1);
-		if (ft_pathfinder(info, 0))
+		ft_delete_el(info->way[info->path_index], 1, info);
+		if (ft_pathfinder(0, info))
 			return (1);
 	}
 	info->way[++(info->path_index)] = info->current_r;
-	if (ft_pathfinder(info, 0))
+	if (ft_pathfinder(0, info))
 		return (1);
 	return (0);
 }

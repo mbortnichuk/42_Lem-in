@@ -12,33 +12,33 @@
 
 #include "lem_in.h"
 
-void		ft_create_edgetable(t_info *info)
+void	ft_create_edgetable(t_info *info)
 {
 	int		i;
-	int		r_1;
-	int		r_2;
+	int		crd1;
+	int		crd2;
 	char	**l;
-	char	**links;
+	char	**link_arr;
 
 	i = -1;
-	links = ft_strsplit(info->link_list, '\n');
-	while (links[++i])
+	link_arr = ft_strsplit(info->link_list, '\n');
+	while (link_arr[++i])
 	{
-		if (links[i][0] == '#')
+		if (link_arr[i][0] == '#')
 			continue ;
-		ft_valid_link(info, links[i]);
-		l = ft_strsplit(links[i], '-');
-		if ((r_1 = ft_roomid(info, l[0], 1)) >= info->rooms_amount ||
-			(r_2 = ft_roomid(info, l[1], 1)) >= info->rooms_amount)
+		ft_valid_link(link_arr[i], info);
+		l = ft_strsplit(link_arr[i], '-');
+		if ((crd1 = ft_roomid(1, l[0], info)) >= info->rooms_amount ||
+			(crd2 = ft_roomid(1, l[1], info)) >= info->rooms_amount)
 		{
-			ft_free_arr(l, info, 0);
-			ft_free_arr(links, info, 1);
+			ft_free_arr(0, l, info);
+			ft_free_arr(1, link_arr, info);
 		}
-		(r_2) ? (info->table[r_1][r_2] = 1) : 0;
-		(r_1) ? (info->table[r_2][r_1] = 1) : 0;
-		ft_free_arr(l, info, 0);
+		(crd2) ? (info->table[crd1][crd2] = 1) : 0;
+		(crd1) ? (info->table[crd2][crd1] = 1) : 0;
+		ft_free_arr(0, l, info);
 	}
-	ft_free_arr(links, info, 0);
+	ft_free_arr(0, link_arr, info);
 }
 
 t_info	*ft_init_edgetable(t_info *info)
@@ -65,22 +65,22 @@ t_info	*ft_init_edgetable(t_info *info)
 	return (info);
 }
 
-void		ft_read_edgetable(t_info *info)
+void	ft_read_edgetable(t_info *info)
 {
-	char *line;
+	char *str;
 
-	while (get_next_line(0, &line) > 0)
+	while (get_next_line(0, &str) > 0)
 	{
 		if (info->ants_amount == 0)
-			ft_ants_amount(info, line);
-		else if (ft_strchr(line, '-') || info->st_point == 3)
-			ft_links(info, line);
-		else if ((info->st_point == 1 || info->st_point == 2) && !ft_empty(line))
-			ft_rooms(info, line);
+			ft_ants_amount(str, info);
+		else if (ft_strchr(str, '-') || info->st_point == 3)
+			ft_links(str, info);
+		else if ((info->st_point == 1 || info->st_point == 2) && !ft_empty(str))
+			ft_rooms(str, info);
 		else
-			ft_freeandexit(info, 1);
+			ft_freeandexit(1, info);
 	}
 	if (!info->ants_amount || !info->link_list[0])
-		ft_freeandexit(info, 1);
+		ft_freeandexit(1, info);
 	info = ft_init_edgetable(info);
 }

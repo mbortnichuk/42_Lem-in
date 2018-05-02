@@ -12,7 +12,7 @@
 
 #include "lem_in.h"
 
-void	ft_freeandexit(t_info *info, int error)
+void	ft_freeandexit(int err, t_info *info)
 {
 	int i;
 
@@ -22,14 +22,17 @@ void	ft_freeandexit(t_info *info, int error)
 	if (info->in2)
 	{
 		free(info->way);
-		ft_free_arr(info->rooms, info, 0);
-		i = -1;
-		while (++i < info->rooms_amount)
+		ft_free_arr(0, info->rooms, info);
+		i = 0;
+		while (i < info->rooms_amount)
+		{
 			free(info->table[i]);
+			i++;
+		}
 		free(info->table);
 	}
 	free(info);
-	if (error)
+	if (err)
 	{
 		ft_putstr_fd("ERROR\n", 2);
 		exit(1);
@@ -37,24 +40,24 @@ void	ft_freeandexit(t_info *info, int error)
 	exit(0);
 }
 
-void	ft_free_arr(char **array, t_info *info, int error)
+void	ft_free_arr(int err, char **arr, t_info *info)
 {
 	int i;
 
 	i = 0;
-	while (array[i])
-		(array[i]) ? free(array[i++]) : 0;
-	free(array);
-	if (error)
-		ft_freeandexit(info, 1);
-	array = NULL;
+	while (arr[i])
+		(arr[i]) ? free(arr[i++]) : 0;
+	free(arr);
+	if (err)
+		ft_freeandexit(1, info);
+	arr = NULL;
 }
 
-void	ft_delete_el(t_info *info, int i, int path)
+void	ft_delete_el(int i, int way, t_info *info)
 {
 	info->table[info->current_r][i] = 0;
 	info->table[i][info->current_r] = 0;
-	if (path)
+	if (way)
 	{
 		info->way[info->path_index] = -1;
 		info->path_index--;

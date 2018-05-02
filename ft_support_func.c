@@ -34,46 +34,46 @@ t_info	*ft_initiation(void)
 	return (info);
 }
 
-int		ft_empty(char *s)
+int		ft_empty(char *str)
 {
 	int i;
 
 	i = 0;
-	while (s[i] && ft_isspace(s[i]))
+	while (str[i] && ft_isspace(str[i]))
 		i++;
-	if (i == ft_strlen(s))
+	if (i == ft_strlen(str))
 		return (1);
 	return (0);
 }
 
-char	*ft_join(char *s1, char *s2, int clean)
+char	*ft_join(int blank, char *str1, char *str2)
 {
-	char *new_s;
+	char *fresh;
 
-	new_s = ft_strnew(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (s1[0] == 0)
-		return (s2);
-	ft_strcat(new_s, s1);
-	ft_strcat(new_s, "\n");
-	ft_strcat(new_s, s2);
-	ft_strdel(&s1);
-	(clean) ? ft_strdel(&s2) : 0;
-	return (new_s);
+	fresh = ft_strnew(ft_strlen(str1) + ft_strlen(str2) + 1);
+	if (str1[0] == 0)
+		return (str2);
+	ft_strcat(fresh, str1);
+	ft_strcat(fresh, "\n");
+	ft_strcat(fresh, str2);
+	ft_strdel(&str1);
+	(blank) ? ft_strdel(&str2) : 0;
+	return (fresh);
 }
 
-void	ft_is_number(char **r, t_info *info, char *s)
+void	ft_is_number(t_info *info, char **room, char *str)
 {
 	int i;
 
 	i = 0;
-	if (s[0] == '-' || ft_isdigit(s[0]))
+	if (str[0] == '-' || (str[0] >= '0' && str[0] <= '9'))
 	{
-		while (s[++i])
+		while (str[++i])
 		{
-			if (!ft_isdigit(s[i]))
-				ft_free_arr(r, info, 1);
+			if (!(str[i] >= '0' && str[i] <= '9'))
+				ft_free_arr(1, room, info);
 		}
 	}
 	else
-		ft_free_arr(r, info, 1);
+		ft_free_arr(1, room, info);
 }

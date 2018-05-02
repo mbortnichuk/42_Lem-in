@@ -12,35 +12,35 @@
 
 #include "lem_in.h"
 
-void		ft_addrooms(t_info *info)
+void	ft_addrooms(t_info *info)
 {
 	int		i;
 	int		j;
-	char	**line;
+	char	**str;
 	char	**r;
 
 	i = -1;
 	j = 1;
-	line = ft_strsplit(info->room_list, '\n');
-	while (line[++i] && j < info->rooms_amount)
+	str = ft_strsplit(info->room_list, '\n');
+	while (str[++i] && j < info->rooms_amount)
 	{
-		r = ft_strsplit(line[i], ' ');
-		if (!ft_strcmp("##start", line[i]))
-			ft_isgood(info, line, r, 0);
-		else if (!ft_strcmp("##end", line[i]))
-			ft_isgood(info, line, r, 1);
-		else if (info->ok[0] == 1 && line[i][0] != '#')
-			ft_check_st_end(info, r, 0);
-		else if (info->ok[1] == 1 && line[i][0] != '#')
-			ft_check_st_end(info, r, 1);
-		else if (line[i][0] != '#')
-			ft_isvalid(info, j++, r);
-		ft_free_arr(r, info, 0);
+		r = ft_strsplit(str[i], ' ');
+		if (!ft_strcmp("##start", str[i]))
+			ft_isgood(0, info, str, r);
+		else if (!ft_strcmp("##end", str[i]))
+			ft_isgood(1, info, str, r);
+		else if (info->ok[0] == 1 && str[i][0] != '#')
+			ft_check_st_end(0, r, info);
+		else if (info->ok[1] == 1 && str[i][0] != '#')
+			ft_check_st_end(1, r, info);
+		else if (str[i][0] != '#')
+			ft_isvalid(j++, r, info);
+		ft_free_arr(0, r, info);
 	}
-	ft_free_arr(line, info, 0);
+	ft_free_arr(0, str, info);
 }
 
-int	ft_lastroom(t_info *info, int i)
+int		ft_lastroom(int i, t_info *info)
 {
 	if (info->table[i][info->rooms_amount - 1])
 	{
@@ -51,31 +51,31 @@ int	ft_lastroom(t_info *info, int i)
 	return (0);
 }
 
-void		ft_rooms(t_info *info, char *line)
+void	ft_rooms(char *str, t_info *info)
 {
 	info->st_point = 2;
-	info->room_list = ft_join(info->room_list, line, 0);
-	if (line[0] == '#')
+	info->room_list = ft_join(0, info->room_list, str);
+	if (str[0] == '#')
 		return ;
-	ft_valid_room(info, line);
+	ft_valid_room(str, info);
 	info->rooms_amount++;
 }
 
-void	ft_valid_link(t_info *info, char *link)
+void	ft_valid_link(char *connection, t_info *info)
 {
-	char **l;
+	char **link;
 
-	l = ft_strsplit(link, '-');
-	if (l[2] != NULL)
-		ft_free_arr(l, info, 1);
-	ft_free_arr(l, info, 0);
+	link = ft_strsplit(connection, '-');
+	if (link[2] != NULL)
+		ft_free_arr(1, link, info);
+	ft_free_arr(0, link, info);
 }
 
-void	ft_links(t_info *info, char *line)
+void	ft_links(char *str, t_info *info)
 {
 	if (info->st_point == 2)
 		info->st_point = 3;
 	if (info->st_point != 3)
-		ft_freeandexit(info, 1);
-	info->link_list = ft_join(info->link_list, line, 0);
+		ft_freeandexit(1, info);
+	info->link_list = ft_join(0, info->link_list, str);
 }

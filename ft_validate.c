@@ -12,58 +12,58 @@
 
 #include "lem_in.h"
 
-void	ft_check_st_end(t_info *info, char **r, int end)
+void	ft_check_st_end(int theend, char **room, t_info *info)
 {
-	if (end)
+	if (theend)
 	{
-		info->rooms[info->rooms_amount - 1] = ft_strdup(r[0]);
+		info->rooms[info->rooms_amount - 1] = ft_strdup(room[0]);
 		(info->ok[1])++;
 		return ;
 	}
-	info->rooms[0] = ft_strdup(r[0]);
+	info->rooms[0] = ft_strdup(room[0]);
 	(info->ok[0])++;
 }
 
-int	ft_roomid(t_info *info, char *room_name, int start)
+int		ft_roomid(int st, char *r_name, t_info *info)
 {
 	int index;
 
-	index = (start) ? -1 : 0;
+	index = (st) ? -1 : 0;
 	while (info->rooms[++index] && index < info->rooms_amount)
 	{
-		if (ft_strcmp(info->rooms[index], room_name) == 0)
+		if (ft_strcmp(info->rooms[index], r_name) == 0)
 			return (index);
 	}
 	return (index);
 }
 
-void	ft_isvalid(t_info *info, int i, char **r)
+void	ft_isvalid(int i, char **room, t_info *info)
 {
-	int r_index;
+	int roomid;
 
-	r_index = ft_roomid(info, r[0], 0);
-	if (r_index > 0 && i != r_index)
-		ft_freeandexit(info, 1);
-	info->rooms[i] = ft_strdup(r[0]);
+	roomid = ft_roomid(0, room[0], info);
+	if (roomid > 0 && i != roomid)
+		ft_freeandexit(1, info);
+	info->rooms[i] = ft_strdup(room[0]);
 }
 
-void	ft_isgood(t_info *info, char **line, char **r, int end)
+void	ft_isgood(int theend, t_info *info, char **str, char **room)
 {
-	if (++(info->ok[end]) > 1)
+	if (++(info->ok[theend]) > 1)
 	{
-		ft_free_arr(r, info, 0);
-		ft_free_arr(line, info, 1);
+		ft_free_arr(0, room, info);
+		ft_free_arr(1, str, info);
 	}
 }
 
-void	ft_valid_room(t_info *info, char *line)
+void	ft_valid_room(char *str, t_info *info)
 {
-	char **r;
+	char **room;
 
-	r = ft_strsplit(line, ' ');
-	if (r[0][0] == 'L' || r[3] != NULL)
-		ft_free_arr(r, info, 1);
-	ft_is_number(r, info, r[1]);
-	ft_is_number(r, info, r[2]);
-	ft_free_arr(r, info, 0);
+	room = ft_strsplit(str, ' ');
+	if (room[0][0] == 'L' || room[3] != NULL)
+		ft_free_arr(1, room, info);
+	ft_is_number(info, room, room[1]);
+	ft_is_number(info, room, room[2]);
+	ft_free_arr(0, room, info);
 }

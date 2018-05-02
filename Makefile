@@ -12,9 +12,16 @@
 
 NAME = lem-in
 
-SRC = main.c
+SRC = ft_init_edgetable.c \
+		ft_validate.c \
+		ft_addrooms.c \
+		ft_pathfinder.c \
+		ft_freeandexit.c \
+		ft_support_func.c \
+		ft_print.c \
+		main.c
 
-INC = inc/ft_filler.h
+INC = lem_in.h
 
 CFLAGS = -Wall -Wextra -Werror -I
 
@@ -28,11 +35,11 @@ all: $(NAME)
 
 
 $(NAME): $(OBJ) $(LIBD)libft.a
-	gcc -I $(INC) $(OBJ) -o $(NAME) -L$(LIBD) -lft
+	@ gcc -I $(INC) $(OBJ) -o $(NAME) -L$(LIBD) -lft
 	@ echo "\033[32;1mlem-in is ready\033[0m"
 
 %.o: %.c
-	gcc -I $(INC) -c $< -o $@
+	@ gcc -I $(INC) -c $< -o $@
 
 $(LIBD)libft.a:
 	@ make -C $(LIBD)

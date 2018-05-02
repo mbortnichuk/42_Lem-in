@@ -20,11 +20,11 @@ int		main(void)
 	ft_read_edgetable(info);
 	ft_addrooms(info);
 	if (!info->ok[0] || !info->ok[1])
-		ft_freeandexit(info, 1);
+		ft_freeandexit(1, info);
 	ft_create_edgetable(info);
-	if (ft_pathfinder(info, 0))
+	if (ft_pathfinder(0, info))
 		ft_res(info);
 	else
-		ft_freeandexit(info, 1);
-	ft_freeandexit(info, 0);
+		ft_freeandexit(1, info);
+	ft_freeandexit(0, info);
 }

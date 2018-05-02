@@ -12,32 +12,32 @@
 
 #include "lem_in.h"
 
-void	ft_print_res(t_info *info, int n)
+void	ft_print_res(int i, t_info *info)
 {
 	int ants;
 
-	if (n == (info->path_index + info->ants_amount + 1))
+	if (i == (info->path_index + info->ants_amount + 1))
 		return ;
 	ants = info->ants_amount + 1;
 	while (--ants > 0)
 	{
-		if (n - ants > 0 && (n - ants) <= info->path_index)
-			ft_print_ant(ants, info->rooms[info->way[n - ants]]);
+		if (i - ants > 0 && (i - ants) <= info->path_index)
+			ft_print_ant(info->rooms[info->way[i - ants]], ants);
 	}
-	ft_putchar('\n');
-	ft_print_res(info, ++n);
+	write(1, "\n", 1);
+	ft_print_res(++i, info);
 }
 
-void	ft_print_ant(int ant, char *room)
+void	ft_print_ant(char *r, int a)
 {
 	write(1, "L", 1);
-	ft_putnbr(ant);
+	ft_putnbr(a);
 	write(1, "-", 1);
-	ft_putstr(room);
+	ft_putstr(r);
 	write(1, " ", 1);
 }
 
-void		ft_res(t_info *info)
+void	ft_res(t_info *info)
 {
 	int i;
 
@@ -46,5 +46,5 @@ void		ft_res(t_info *info)
 	ft_putendl(info->room_list);
 	ft_putendl(info->link_list);
 	write(1, "\n", 1);
-	ft_print_res(info, 2);
+	ft_print_res(2, info);
 }
