@@ -44,7 +44,7 @@ Map consist of:
      - Number must be only positive number.
 2. Comments: 
      - "##start" and "##end" are provided to show the start and end room.
-     - Any other comments we shouldn't be taken into account.
+     - Any other comments we shouldn't take into account.
 3. Rooms:
      - All rooms defined as: [room name][x_coord][y_coord]
      - Room name cannot start with "L" or space.
