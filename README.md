@@ -50,7 +50,7 @@ Map consist of:
      - Room name cannot start with "L" or space.
      - Room's coordinates always will be integers and cannot be identical.
 4. Links:
-     - Links defines as: [room_name1]-[room_name2]
+     - Links defined as: [room_name1]-[room_name2]
 
 ## Output example
 ```
